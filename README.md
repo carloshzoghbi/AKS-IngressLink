@@ -109,7 +109,7 @@ kubectl get nodes
 
 
 # 2. F5 BIG-IP AWAF VE in Azure 
-Deploy F5 BIG-IP (without NSG, there is a default NSG attached to subnet)(15 - 20 min):
+Deploy F5 BIG-IP (15 - 20 min):
 
 ```shell
 # Install the BIG-IP AWAF VE
@@ -166,12 +166,15 @@ wget https://raw.githubusercontent.com/carloshzoghbi/kubernetes-aws/main/bigip-c
 4. Create the following iRule on the BIG-IP instance:
    - Follow steps 4 and 5 in [Lab4.1 BIG-IP Setup](https://clouddocs.f5.com/training/community/containers/html/class1/module4/lab1.html) to create the iRule *Proxy_Protocol_iRule* on the BIG-IP instance.
 
-5. Copy and paste the following commands:  
+5. Create the NGINX KIC:  
 
 ```shell
 chmod u+x create-nginx-ingress.sh
 
 ./create-nginx-ingress.sh
+```
+  
+6. Create the NGINX KIC
 
 kubectl create secret generic f5-bigip-ctlr-login -n kube-system --from-literal=username=admin --from-literal=password=????
 
@@ -185,11 +188,11 @@ kubectl apply -f ingresslink.yaml
 ```
 NGINX ingress controller, BIG-IP CIS, BIG-IP instance and F5 Ingress link are deployed!
  
-1. Replace the ???? chars in the next line with the your BIG-IP password. 
+7. Replace the ???? chars in the next line with the your BIG-IP password. 
 
     ``kubectl create secret generic f5-bigip-ctlr-login -n kube-system --from-literal=username=admin --from-literal=password=????``  
 
-2. Copy and paste the following commands:     
+8. Copy and paste the following commands:     
 
     ``kubectl create -f https://raw.githubusercontent.com/carloshzoghbi/kubernetes-aws/main/bigip-ctrl-ingress/config/bigip-ctlr-clusterrole.yaml``  
 
