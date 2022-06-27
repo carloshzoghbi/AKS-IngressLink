@@ -147,7 +147,7 @@ Verify AS3 is installed at iApps > Package Managment LX. See "f5-appsvcs"
 
 ```shell
 
-wget https://raw.githubusercontent.com/carloshzoghbi/kubernetes-aws/main/bigip-ctrl-ingress/ingressLink/create-nginx-ingress.sh
+wget https://raw.githubusercontent.com/carloshzoghbi/AKS-IngressLink/main/create-ingress.sh
 
 wget https://raw.githubusercontent.com/carloshzoghbi/kubernetes-aws/main/bigip-ctrl-ingress/config/cis-deployment.yaml
 
