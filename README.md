@@ -62,7 +62,7 @@ brew install kubectl
 ```
 
 
-# Kubernetes Azure AKS Cluster:  
+# 1. Kubernetes Azure AKS Cluster:  
   
 Perform the following steps in this README.md to first deploy a Kubernetes cluster on Azure using aks.
   
@@ -108,7 +108,7 @@ kubectl get nodes
 ```
 
 
-# F5 BIG-IP AWAF VE in Azure 
+# 2. F5 BIG-IP AWAF VE in Azure 
 Deploy F5 BIG-IP (without NSG, there is a default NSG attached to subnet)(15 - 20 min):
 
 ```shell
@@ -131,3 +131,109 @@ curl -kvu $CREDS https://$IP/mgmt/shared/appsvcs/info
 # Create cis partition
 curl -kvu $CREDS https://$IP/mgmt/tm/sys/folder -X POST -H 'Content-Type: application/json;charset=UTF-8' -d '{"name": "cispartition", "partition": "/"}'
 ```
+# 3. F5 IngressLink 
+This is a step by step guide to deploy f5 IngressLink.
+
+***Image***
+
+1. Ensure you can login to the BIG-IP
+
+- Login to BIG-IP GUI https://<IP>:8443
+Verify AS3 is installed at iApps > Package Managment LX. See "f5-appsvcs"
+
+### Create the BIG-IP Container Ingress Service
+#### Configure the CIS deployment files:
+2. Copy and paste the following commands:
+
+```shell
+
+wget https://raw.githubusercontent.com/carloshzoghbi/kubernetes-aws/main/bigip-ctrl-ingress/ingressLink/create-nginx-ingress.sh
+
+wget https://raw.githubusercontent.com/carloshzoghbi/kubernetes-aws/main/bigip-ctrl-ingress/config/cis-deployment.yaml
+
+wget https://raw.githubusercontent.com/carloshzoghbi/kubernetes-aws/main/bigip-ctrl-ingress/ingressLink/config/ingresslink.yaml
+
+wget https://raw.githubusercontent.com/carloshzoghbi/kubernetes-aws/main/bigip-ctrl-ingress/ingressLink/config/customresourcedefinitions.yaml
+
+wget https://raw.githubusercontent.com/carloshzoghbi/kubernetes-aws/main/bigip-ctrl-ingress/ingressLink/config/ingresslink-customresourcedefinition.yaml
+```
+
+3. Edit the following 2 files:  
+   -- **cis-deployment.yaml**:  
+      &nbsp;&nbsp;&nbsp;&nbsp;- Fill in the value of "--bigip-url" with the self IP of the BIG-IP. This is the private IP address of the BIG-IP that the controller will contact. Using the external IP may work but is not secure.
+      &nbsp;&nbsp;&nbsp;&nbsp;- Uncomment "--custom-resource-mode=true",
+
+4. Create the following iRule on the BIG-IP instance:
+   - Follow steps 4 and 5 in [Lab4.1 BIG-IP Setup](https://clouddocs.f5.com/training/community/containers/html/class1/module4/lab1.html) to create the iRule *Proxy_Protocol_iRule* on the BIG-IP instance.
+
+5. Copy and paste the following commands:  
+
+```shell
+chmod u+x create-nginx-ingress.sh
+
+./create-nginx-ingress.sh
+
+kubectl create secret generic f5-bigip-ctlr-login -n kube-system --from-literal=username=admin --from-literal=password=????
+
+kubectl apply -f cis-ingresslink-deployment.yaml
+
+kubectl apply -f ingresslink-customresourcedefinition.yaml
+
+kubectl apply -f customresourcedefinitions.yaml
+
+kubectl apply -f ingresslink.yaml
+```
+NGINX ingress controller, BIG-IP CIS, BIG-IP instance and F5 Ingress link are deployed!
+ 
+1. Replace the ???? chars in the next line with the your BIG-IP password. 
+
+    ``kubectl create secret generic f5-bigip-ctlr-login -n kube-system --from-literal=username=admin --from-literal=password=????``  
+
+2. Copy and paste the following commands:     
+
+    ``kubectl create -f https://raw.githubusercontent.com/carloshzoghbi/kubernetes-aws/main/bigip-ctrl-ingress/config/bigip-ctlr-clusterrole.yaml``  
+
+    ``kubectl create -f cis-deployment.yaml``  
+
+    ``#Create application pods and services ``  
+    ``kubectl create -f f5-hello-world-deployment.yaml``  
+    ``kubectl create -f f5-hello-world-service.yaml`` 
+  
+    ``#Create as3 definition to configure BIG-IP ``  
+    ``sleep 3``  
+    ``kubectl create -f as3.yaml``  
+
+BIG-IP Container Ingress Service is deployed!  
+
+Optional: Change from Nodeport to Cluster IP mode   
+The setup is currently running in Nodeport mode. See the verification section below to verify the nodeport vs clusterIP set up.  
+To switch to ClusterIP mode, run:  
+``kc edit -f cis-deployment.yaml -n kube-system``  
+
+Replace 
+``- --pool-member-type=nodeport``  with   ``- --pool-member-type=cluster``   
+
+## Verification:   
+- Access the BIG-IP virtual server: http://??bigip external IP address??   
+- The following should be configured on the BIG-IP:
+  - A New partition called **mypartition-name** is created with virtual server, pool, and the Kubernetes nodes as pool members. 
+  - In CIS **nodeport**, the pool members are the Node IP addresses and port numbers are different ephemeral random port numbers  
+  - In CIS **ClusterIP**, pool members are Pod IP addresses and port number is the one defined in the *f5-hello-world-deployment.yaml* file.  
+- The BIG-IP Controller is deployed as a pod in the kube-system namespace.  
+  $ kubectl get pods -n kube-system  
+  NAME                                         READY   STATUS    RESTARTS   AGE   
+  [...]   
+  k8s-bigip-ctlr-deployment-7f56b674ff-lj5kk   1/1     Running   0          85s  
+  [...]   
+
+## What's next:  
+Go to the sub directory [*ingresslink*](https://github.com/carloshzoghbi/kubernetes-aws/tree/main/bigip-ctrl-ingress/ingressLink), to create NGINX ingress controller and F5 Ingress Link.  
+
+## Destroy
+1. On Azure portal, destroy the RG.  
+   - Go to Azure Portal > Resource Group > Name-of-Resource-Group  
+   - *Delete*.   
+
+## Source
+[F5 CIS on Clouddocs](https://clouddocs.f5.com/containers/latest/userguide/kubernetes/#examples-repository).  
+The [F5Networks / k8s-bigip-ctlr repository](https://github.com/F5Networks/k8s-bigip-ctlr).  
