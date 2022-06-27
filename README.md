@@ -180,7 +180,7 @@ chmod u+x create-nginx-ingress.sh
 ```shell
 kubectl create secret generic f5-bigip-ctlr-login -n kube-system --from-literal=username=admin --from-literal=password=????
 
-kubectl apply -f cis-ingresslink-deployment.yaml
+kubectl apply -f cis-deployment.yaml
 
 kubectl apply -f ingresslink-customresourcedefinition.yaml
 
