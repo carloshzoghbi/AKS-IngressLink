@@ -161,7 +161,8 @@ wget https://raw.githubusercontent.com/carloshzoghbi/kubernetes-aws/main/bigip-c
 3. Edit the following 2 files:  
    -- **cis-deployment.yaml**:  
       &nbsp;&nbsp;&nbsp;&nbsp;- Fill in the value of "--bigip-url" with the self IP of the BIG-IP. This is the private IP address of the BIG-IP that the controller will contact. Using the external IP may work but is not secure.
-      &nbsp;&nbsp;&nbsp;&nbsp;- Uncomment "--custom-resource-mode=true",
+  -- **ingresslink.yaml**:
+      &nbsp;&nbsp;&nbsp;&nbsp;- Replace 'virtualServerAddress: "??????"' with the VS IP. For single NIC, this is the self IP address.
 
 4. Create the following iRule on the BIG-IP instance:
    - Follow steps 4 and 5 in [Lab4.1 BIG-IP Setup](https://clouddocs.f5.com/training/community/containers/html/class1/module4/lab1.html) to create the iRule *Proxy_Protocol_iRule* on the BIG-IP instance.
@@ -176,6 +177,7 @@ chmod u+x create-nginx-ingress.sh
   
 6. Create the NGINX KIC
 
+```shell
 kubectl create secret generic f5-bigip-ctlr-login -n kube-system --from-literal=username=admin --from-literal=password=????
 
 kubectl apply -f cis-ingresslink-deployment.yaml
@@ -187,24 +189,6 @@ kubectl apply -f customresourcedefinitions.yaml
 kubectl apply -f ingresslink.yaml
 ```
 NGINX ingress controller, BIG-IP CIS, BIG-IP instance and F5 Ingress link are deployed!
- 
-7. Replace the ???? chars in the next line with the your BIG-IP password. 
-
-    ``kubectl create secret generic f5-bigip-ctlr-login -n kube-system --from-literal=username=admin --from-literal=password=????``  
-
-8. Copy and paste the following commands:     
-
-    ``kubectl create -f https://raw.githubusercontent.com/carloshzoghbi/kubernetes-aws/main/bigip-ctrl-ingress/config/bigip-ctlr-clusterrole.yaml``  
-
-    ``kubectl create -f cis-deployment.yaml``  
-
-    ``#Create application pods and services ``  
-    ``kubectl create -f f5-hello-world-deployment.yaml``  
-    ``kubectl create -f f5-hello-world-service.yaml`` 
-  
-    ``#Create as3 definition to configure BIG-IP ``  
-    ``sleep 3``  
-    ``kubectl create -f as3.yaml``  
 
 BIG-IP Container Ingress Service is deployed!  
 
