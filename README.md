@@ -147,15 +147,15 @@ Verify AS3 is installed at iApps > Package Managment LX. See "f5-appsvcs"
 
 ```shell
 
-wget https://raw.githubusercontent.com/carloshzoghbi/AKS-IngressLink/main/create-ingress.sh
+wget https://raw.githubusercontent.com/carloshzoghbi/AKS-IngressLink/main/create-nginx-ingress.sh
 
-wget https://raw.githubusercontent.com/carloshzoghbi/kubernetes-aws/main/bigip-ctrl-ingress/config/cis-deployment.yaml
+wget https://raw.githubusercontent.com/carloshzoghbi/AKS-IngressLink/main/cis-deployment.yaml
 
-wget https://raw.githubusercontent.com/carloshzoghbi/kubernetes-aws/main/bigip-ctrl-ingress/ingressLink/config/ingresslink.yaml
+wget https://raw.githubusercontent.com/carloshzoghbi/AKS-IngressLink/main/ingresslink.yaml
 
-wget https://raw.githubusercontent.com/carloshzoghbi/kubernetes-aws/main/bigip-ctrl-ingress/ingressLink/config/customresourcedefinitions.yaml
+wget https://raw.githubusercontent.com/carloshzoghbi/AKS-IngressLink/main/customresourcedefinitions.yaml
 
-wget https://raw.githubusercontent.com/carloshzoghbi/kubernetes-aws/main/bigip-ctrl-ingress/ingressLink/config/ingresslink-customresourcedefinition.yaml
+wget https://raw.githubusercontent.com/carloshzoghbi/AKS-IngressLink/main/ingresslink-customresourcedefinition.yaml
 ```
 
 3. Edit the following 2 files:  
@@ -181,7 +181,7 @@ chmod u+x create-nginx-ingress.sh
 ```shell
 kubectl create secret generic f5-bigip-ctlr-login -n kube-system --from-literal=username=admin --from-literal=password=????
 
-kubectl create -f https://raw.githubusercontent.com/carloshzoghbi/kubernetes-aws/main/bigip-ctrl-ingress/config/bigip-ctlr-clusterrole.yaml
+kubectl create -f https://raw.githubusercontent.com/carloshzoghbi/AKS-IngressLink/main/bigip-ctlr-clusterrole.yaml
 
 kubectl apply -f cis-deployment.yaml
 
