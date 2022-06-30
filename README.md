@@ -72,16 +72,16 @@ az account list --output table
 az account set --subscription f5-AZR_4261_SALES_SA_ALL
 
 #Change the XXX for your alias resource names
-RG="XXX-k8s-gud"
-LOCATION="eastus2"
-VNET="XXX-k8s-vnet"
-SUBMASTER="master-subnet"
-SUBWORKER="worker-subnet"
-SUBSERVER="server-subnet"
-NSG="XXX-NSG"
-MYIP=$(curl -s https://ipv4.myip.wtf/text)
-AKSCLUSTER="XXXAKS"
-F5VM="f5vm01"
+export RG="XXX-k8s-gud"
+export LOCATION="eastus2"
+export VNET="XXX-k8s-vnet"
+export SUBMASTER="master-subnet"
+export SUBWORKER="worker-subnet"
+export SUBSERVER="server-subnet"
+export NSG="XXX-NSG"
+export MYIP=$(curl -s https://ipv4.myip.wtf/text)
+export AKSCLUSTER="XXXAKS"
+export F5VM="f5vm01"
 
 #Create Resource Group
 az group create -l $LOCATION -n $RG
@@ -101,12 +101,13 @@ VNETSUBID=$(az network vnet subnet show -g $RG -n aks-subnet --vnet-name $VNET |
 echo $VNETSUBID
 
 
-# Deploy AKS & Registry
+# Deploy AKS
 az aks create -l $LOCATION --resource-group $RG --name $AKSCLUSTER --node-count 2 --enable-addons monitoring --generate-ssh-keys --api-server-authorized-ip-ranges $MYIP --vnet-subnet-id $VNETSUBID
 az aks get-credentials --name $AKSCLUSTER --resource-group $RG --file ~/.kube/config
 kubectl get nodes
 ```
-
+Note: It is highly recommended to use USER assigned identity (option --assign-identity) when you want to bring your ownsubnet, which will have no latency for the role assignment to take effect. When using SYSTEM assigned identity, azure-cli will grant Network Contributor role to the system assigned identity after the cluster is created, and the role assignment will take some time to take effect, see https://docs.microsoft.com/azure/aks/use-managed-identity, proceed to create cluster with system assigned identity? 
+>>Type: y
 
 # 2. F5 BIG-IP AWAF VE in Azure 
 Deploy F5 BIG-IP (15 - 20 min):
@@ -176,7 +177,7 @@ chmod u+x create-nginx-ingress.sh
 ./create-nginx-ingress.sh
 ```
   
-6. Create the NGINX KIC
+6. Create the F5 CIS and IngressLink
 
 ```shell
 kubectl create secret generic f5-bigip-ctlr-login -n kube-system --from-literal=username=admin --from-literal=password=????
