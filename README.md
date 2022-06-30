@@ -196,39 +196,4 @@ kubectl apply -f customresourcedefinitions.yaml
 kubectl apply -f ingresslink.yaml
 ```
 
-  NGINX ingress controller, BIG-IP CIS, BIG-IP instance and F5 Ingress link are deployed!
-
-BIG-IP Container Ingress Service is deployed!  
-
-Optional: Change from Nodeport to Cluster IP mode   
-The setup is currently running in Nodeport mode. See the verification section below to verify the nodeport vs clusterIP set up.  
-To switch to ClusterIP mode, run:  
-``kc edit -f cis-deployment.yaml -n kube-system``  
-
-Replace 
-``- --pool-member-type=nodeport``  with   ``- --pool-member-type=cluster``   
-
-## Verification:   
-- Access the BIG-IP virtual server: http://??bigip external IP address??   
-- The following should be configured on the BIG-IP:
-  - A New partition called **mypartition-name** is created with virtual server, pool, and the Kubernetes nodes as pool members. 
-  - In CIS **nodeport**, the pool members are the Node IP addresses and port numbers are different ephemeral random port numbers  
-  - In CIS **ClusterIP**, pool members are Pod IP addresses and port number is the one defined in the *f5-hello-world-deployment.yaml* file.  
-- The BIG-IP Controller is deployed as a pod in the kube-system namespace.  
-  $ kubectl get pods -n kube-system  
-  NAME                                         READY   STATUS    RESTARTS   AGE   
-  [...]   
-  k8s-bigip-ctlr-deployment-7f56b674ff-lj5kk   1/1     Running   0          85s  
-  [...]   
-
-## What's next:  
-Go to the sub directory [*ingresslink*](https://github.com/carloshzoghbi/kubernetes-aws/tree/main/bigip-ctrl-ingress/ingressLink), to create NGINX ingress controller and F5 Ingress Link.  
-
-## Destroy
-1. On Azure portal, destroy the RG.  
-   - Go to Azure Portal > Resource Group > Name-of-Resource-Group  
-   - *Delete*.   
-
-## Source
-[F5 CIS on Clouddocs](https://clouddocs.f5.com/containers/latest/userguide/kubernetes/#examples-repository).  
-The [F5Networks / k8s-bigip-ctlr repository](https://github.com/F5Networks/k8s-bigip-ctlr).  
+  NGINX ingress controller, BIG-IP CIS, BIG-IP instance and F5 Ingress link are deployed! 
