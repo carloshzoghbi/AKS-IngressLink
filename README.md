@@ -106,7 +106,7 @@ az aks create -l $LOCATION --resource-group $RG --name $AKSCLUSTER --node-count 
 az aks get-credentials --name $AKSCLUSTER --resource-group $RG --file ~/.kube/config
 kubectl get nodes
 ```
-Note: It is highly recommended to use USER assigned identity (option --assign-identity) when you want to bring your ownsubnet, which will have no latency for the role assignment to take effect. When using SYSTEM assigned identity, azure-cli will grant Network Contributor role to the system assigned identity after the cluster is created, and the role assignment will take some time to take effect, see https://docs.microsoft.com/azure/aks/use-managed-identity, proceed to create cluster with system assigned identity? 
+Note: It is highly recommended to use USER assigned identity (option --assign-identity) when you want to bring your ownsubnet, which will have no latency for the role assignment to take effect. When using SYSTEM assigned identity, azure-cli will grant Network Contributor role to the system assigned identity after the cluster is created, and the role assignment will take some time to take effect, see https://docs.microsoft.com/azure/aks/use-managed-identity, proceed to create cluster with system assigned identity? (y/N): 
 >>Type: y
 
 # 2. F5 BIG-IP AWAF VE in Azure 
