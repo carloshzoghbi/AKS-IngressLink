@@ -162,9 +162,10 @@ wget https://raw.githubusercontent.com/carloshzoghbi/AKS-IngressLink/main/ingres
 3. Edit the following 2 files:  
    -- **cis-deployment.yaml**:  
       &nbsp;&nbsp;&nbsp;&nbsp;- Fill in the value of "--bigip-url" with the self IP of the BIG-IP. This is the private IP address of the BIG-IP that the controller will contact. Using the external IP may work but is not secure.
-      &nbsp;&nbsp;&nbsp;&nbsp;- Uncomment "--custom-resource-mode=true",
   
-  &nbsp;&nbsp;&nbsp;&nbsp;-- **ingresslink.yaml**:
+  &nbsp;&nbsp;&nbsp;&nbsp;- Uncomment "--custom-resource-mode=true",
+  
+   -- **ingresslink.yaml**:
       &nbsp;&nbsp;&nbsp;&nbsp;- Replace 'virtualServerAddress: "??????"' with the VS IP. For single NIC, this is the self IP address.
       
 
