@@ -216,7 +216,7 @@ kubectl apply -f ingresslink.yaml
   
 # 4. Test the App
   
-### Login to Kali
+### Login to Kali and test de app
   1. Open your Kali Linux terminal. Use the private key you download in previows steps. Ensure you have read-only access to the private key
   Use chmod 400 <keyname> 
   2. Type 'sudo bash'
