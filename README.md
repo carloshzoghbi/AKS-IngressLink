@@ -135,8 +135,8 @@ curl -kvu $CREDS https://$IP/mgmt/tm/sys/folder -X POST -H 'Content-Type: applic
 # 3. Create a Kali VM
 
 - On the Azure portal go to your Resource Group, click and enter on it.
-- Click on Create
-- Click on Virtual machine
+- Click on 'Create'
+- Click on 'Virtual machine'
 - Fill in and choose the following configuration:
   - Virtual machine name: kali
   - Region: Select the region you chose when you created the RG
@@ -144,7 +144,8 @@ curl -kvu $CREDS https://$IP/mgmt/tm/sys/folder -X POST -H 'Content-Type: applic
 - On the "Networking" tab 
   - In 'Subnet' chose server-subnet
   - In 'Configure network security group' select the NSG you create for this lab
--Click on Review + create and Create
+- Click on Review + create and Create
+- Click on 'Download private key and create resource'. You will use it for connect later to this VM.
 
 # 4. F5 IngressLink 
 This is a step by step guide to deploy f5 IngressLink.
@@ -211,3 +212,20 @@ kubectl apply -f ingresslink.yaml
 ```
 
   NGINX ingress controller, BIG-IP CIS, BIG-IP instance and F5 Ingress link are deployed! 
+  
+  
+# 4. Test the App
+  
+###Login to Kali
+  1. Open your Kali Linux terminal. Use the private key you download in previows steps. Ensure you have read-only access to the private key
+  Use chmod 400 <keyname> 
+  2. Type 'sudo bash'
+  2. Use the following command to install the tool:
+  ```shell
+  git clone https://github.com/jseidl/GoldenEye.git 
+  ```
+  3. Modify the 'hosts' pointing 'cafe.example.com' to the VS IP
+  4. Use the following command to launch the attack:
+  ```shell
+  ./GoldenEye/goldeneye.py https://cafe.example.com -s 1000 -m post -n
+  ```
