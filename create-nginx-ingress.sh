@@ -35,3 +35,4 @@ kubectl create -f ap-dataguard-alarm-policy.yaml
 kubectl create -f ap-apple-uds.yaml
 kubectl create -f cafe-ingress.yaml
 kubectl apply -f nodeport.yaml
+cd ../..
