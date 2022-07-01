@@ -132,7 +132,21 @@ curl -kvu $CREDS https://$IP/mgmt/shared/appsvcs/info
 # Create cis partition
 curl -kvu $CREDS https://$IP/mgmt/tm/sys/folder -X POST -H 'Content-Type: application/json;charset=UTF-8' -d '{"name": "cispartition", "partition": "/"}'
 ```
-# 3. F5 IngressLink 
+# 3. Create a Kali VM
+
+- On the Azure portal go to your Resource Group, click and enter on it.
+- Click on Create
+- Click on Virtual machine
+- Fill in and choose the following configuration:
+  - Virtual machine name: kali
+  - Region: Select the region you chose when you created the RG
+  - Image: Click on "See all images" and search for Kali GUI Linux by Techlatest.net
+- On the "Networking" tab 
+  - In 'Subnet' chose server-subnet
+  - In 'Configure network security group' select the NSG you create for this lab
+-Click on Review + create and Create
+
+# 4. F5 IngressLink 
 This is a step by step guide to deploy f5 IngressLink.
 
 ***Image***
@@ -183,7 +197,7 @@ chmod u+x create-nginx-ingress.sh
 6. Create the F5 CIS and IngressLink
 
 ```shell
-kubectl create secret generic f5-bigip-ctlr-login -n kube-system --from-literal=username=admin --from-literal=password=????
+kubectl create secret generic f5-bigip-ctlr-login -n kube-system --from-literal=username=admin --from-literal=password=f5DEMOs4uLATAM
 
 kubectl create -f https://raw.githubusercontent.com/carloshzoghbi/AKS-IngressLink/main/bigip-ctlr-clusterrole.yaml
 
