@@ -1,7 +1,7 @@
 #!/bin/sh
 git clone https://github.com/carloshzoghbi/kubernetes-ingress
 cd kubernetes-ingress/deployments
-git checkout v2.2.2
+git checkout v2.1.1
 git switch main
 cp ../examples/appprotect/cafe.yaml .
 cp ../examples/appprotect/cafe-secret.yaml .
@@ -17,6 +17,7 @@ kubectl apply -f deployment/appprotect-dos-arb.yaml
 kubectl apply -f service/appprotect-dos-arb-svc.yaml
 kubectl apply -f rbac/rbac.yaml
 kubectl apply -f rbac/ap-rbac.yaml
+kubectl apply -f rbac/apdos-rbac.yaml
 kubectl apply -f common/default-server-secret.yaml
 kubectl apply -f nginx-config.yaml
 kubectl apply -f common/ingress-class.yaml
