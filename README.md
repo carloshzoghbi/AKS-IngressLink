@@ -116,6 +116,8 @@ Deploy F5 BIG-IP (15 - 20 min):
 # Install the BIG-IP AWAF VE
 az vm create -n $F5VM -g $RG -l $LOCATION --image f5-networks:f5-big-ip-advanced-waf:f5-big-awf-plus-hourly-25mbps:16.1.202000 --admin-username azureuser --admin-password f5DEMOs4uLATAM --tags "owner=$TAG" --vnet-name $VNET --subnet server-subnet --nsg "" --size Standard_D2s_v3
 
+#IMPORTANT NOTE: Ensure you can access the VE by the GUI!
+
 # Install AS3. Download package first !!!
 wget https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.36.0/f5-appsvcs-3.36.0-6.noarch.rpm
 
