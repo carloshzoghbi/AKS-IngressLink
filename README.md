@@ -116,7 +116,7 @@ Deploy F5 BIG-IP (15 - 20 min):
 # Install the BIG-IP AWAF VE
 az vm create -n $F5VM -g $RG -l $LOCATION --image f5-networks:f5-big-ip-advanced-waf:f5-big-awf-plus-hourly-25mbps:16.1.202000 --admin-username azureuser --admin-password f5DEMOs4uLATAM --tags "owner=$TAG" --vnet-name $VNET --subnet server-subnet --nsg "" --size Standard_D2s_v3
 
-#IMPORTANT NOTE: Ensure you can access the VE by the GUI!
+#IMPORTANT NOTE: Ensure you can access the VE by the GUI before proceed!
 
 # Install AS3. Download package first !!!
 wget https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.36.0/f5-appsvcs-3.36.0-6.noarch.rpm
@@ -144,11 +144,13 @@ curl -kvu $CREDS https://$IP/mgmt/tm/sys/folder -X POST -H 'Content-Type: applic
 - Fill in and choose the following configuration:
   - Virtual machine name: kali
   - Region: Select the region you chose when you created the RG
+  - Avaliability options: No infrastructure redundancy required
   - Image: Click on "See all images" and search for Kali GUI Linux by Techlatest.net
+  Note: Let deafult values on the other options.
 - On the "Networking" tab 
   - In 'Subnet' chose server-subnet
   - In 'Configure network security group' select the NSG you create for this lab
-- Click on Review + create and Create
+- Click on 'Review + create' and 'Create'
 - Click on 'Download private key and create resource'. You will use it for connect later to this VM.
 
 # 4. F5 IngressLink 
@@ -156,7 +158,7 @@ This is a step by step guide to deploy f5 IngressLink.
 
 ***Image***
 
-1. Ensure you can login to the BIG-IP
+1. Ensure you can login to the BIG-IP (you can use echo $IP)
 
 - Login to BIG-IP GUI https://<IP>:8443
 Verify AS3 is installed at iApps > Package Managment LX. See "f5-appsvcs"
@@ -166,30 +168,21 @@ Verify AS3 is installed at iApps > Package Managment LX. See "f5-appsvcs"
 2. Copy and paste the following commands:
 
 ```shell
-
-wget https://raw.githubusercontent.com/carloshzoghbi/AKS-IngressLink/main/create-nginx-ingress.sh
-
-wget https://raw.githubusercontent.com/carloshzoghbi/AKS-IngressLink/main/cis-deployment.yaml
-
-wget https://raw.githubusercontent.com/carloshzoghbi/AKS-IngressLink/main/ingresslink.yaml
-
-wget https://raw.githubusercontent.com/carloshzoghbi/AKS-IngressLink/main/customresourcedefinitions.yaml
-
-wget https://raw.githubusercontent.com/carloshzoghbi/AKS-IngressLink/main/ingresslink-customresourcedefinition.yaml
+git clone https://github.com/carloshzoghbi/AKS-IngressLink.git
 ```
 
 3. Edit the following 2 files:  
--- **cis-deployment.yaml**:  
+**cis-deployment.yaml**:  
   - Fill in the value of "--bigip-url" with the self IP of the BIG-IP. This is the private IP address of the BIG-IP that the controller will contact. Using the external IP may work but is not secure.
 
   - Uncomment "--custom-resource-mode=true",
   
--- **ingresslink.yaml**:
+**ingresslink.yaml**:
   - Replace 'virtualServerAddress: "??????"' with the VS IP. For single NIC, this is the self IP address.
       
 
 4. Create the following iRule on the BIG-IP instance:
-   - Follow steps 4 and 5 in [Lab4.1 BIG-IP Setup](https://clouddocs.f5.com/training/community/containers/html/class1/module4/lab1.html) to create the iRule *Proxy_Protocol_iRule* on the BIG-IP instance.
+   - Follow steps from 1 to 6 in [Lab4.1 BIG-IP Setup](https://clouddocs.f5.com/training/community/containers/html/class1/module4/lab1.html) to create the iRule *Proxy_Protocol_iRule* on the BIG-IP instance.
 
 5. Create the NGINX KIC:  
 
@@ -197,6 +190,9 @@ wget https://raw.githubusercontent.com/carloshzoghbi/AKS-IngressLink/main/ingres
 chmod u+x create-nginx-ingress.sh
 
 ./create-nginx-ingress.sh
+
+# Check the services until the endpoints are populated
+Kubectl describe svc -n nginx-ingress  
 ```
   
 6. Create the F5 CIS and IngressLink
@@ -204,11 +200,9 @@ chmod u+x create-nginx-ingress.sh
 ```shell
 kubectl create secret generic f5-bigip-ctlr-login -n kube-system --from-literal=username=admin --from-literal=password=f5DEMOs4uLATAM
 
-kubectl create -f https://raw.githubusercontent.com/carloshzoghbi/AKS-IngressLink/main/bigip-ctlr-clusterrole.yaml
+kubectl create -f bigip-ctlr-clusterrole.yaml
 
 kubectl apply -f cis-deployment.yaml
-
-kubectl apply -f ingresslink-customresourcedefinition.yaml
 
 kubectl apply -f customresourcedefinitions.yaml
 
