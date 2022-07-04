@@ -1,7 +1,7 @@
 #!/bin/sh
 git clone https://github.com/carloshzoghbi/kubernetes-ingress
 cd kubernetes-ingress/deployments
-git checkout v2.1.1
+git checkout v2.2.2
 git switch main
 cp ../examples/appprotect/cafe.yaml .
 cp ../examples/appprotect/cafe-secret.yaml .
@@ -13,6 +13,8 @@ wget https://raw.githubusercontent.com/carloshzoghbi/kubernetes-aws/main/bigip-c
 wget https://raw.githubusercontent.com/carloshzoghbi/kubernetes-aws/main/bigip-ctrl-ingress/ingressLink/config/loadbalancer.yaml
 wget https://raw.githubusercontent.com/carloshzoghbi/kubernetes-aws/main/bigip-ctrl-ingress/ingressLink/config/nginx-config.yaml
 kubectl apply -f common/ns-and-sa.yaml
+kubectl apply -f deployment/appprotect-dos-arb.yaml
+kubectl apply -f service/appprotect-dos-arb-svc.yaml
 kubectl apply -f rbac/rbac.yaml
 kubectl apply -f rbac/ap-rbac.yaml
 kubectl apply -f common/default-server-secret.yaml
@@ -26,6 +28,9 @@ kubectl apply -f common/crds/k8s.nginx.org_globalconfigurations.yaml
 kubectl apply -f common/crds/appprotect.f5.com_aplogconfs.yaml
 kubectl apply -f common/crds/appprotect.f5.com_appolicies.yaml
 kubectl apply -f common/crds/appprotect.f5.com_apusersigs.yaml
+kubectl apply -f common/crds/appprotectdos.f5.com_apdoslogconfs.yaml
+kubectl apply -f common/crds/appprotectdos.f5.com_apdospolicy.yaml
+kubectl apply -f common/crds/appprotectdos.f5.com_dosprotectedresources.yaml
 kubectl apply -f daemon-set/nginx-plus-ingress.yaml
 kubectl apply -f loadbalancer.yaml
 kubectl create -f cafe.yaml
