@@ -1,7 +1,7 @@
 #!/bin/sh
 git clone https://github.com/carloshzoghbi/kubernetes-ingress
 cd kubernetes-ingress/deployments
-git checkout v2.2.2
+git checkout v2.1.1
 git switch main
 cp ../examples/appprotect/cafe.yaml .
 cp ../examples/appprotect/cafe-secret.yaml .
@@ -9,10 +9,17 @@ cp ../examples/appprotect/cafe-ingress.yaml .
 cp ../examples/appprotect/ap-logconf.yaml .
 cp ../examples/appprotect/ap-dataguard-alarm-policy.yaml .
 cp ../examples/appprotect/ap-apple-uds.yaml .
+cp ../examples/appprotect-dos/syslog.yaml .
+cp ../examples/appprotect-dos/syslog2.yaml .
+cp ../examples/appprotect-dos/apdos-logconf.yaml .
+cp ../examples/appprotect-dos/apdos-policy.yaml .
 wget https://raw.githubusercontent.com/carloshzoghbi/kubernetes-aws/main/bigip-ctrl-ingress/ingressLink/config/nodeport.yaml
 wget https://raw.githubusercontent.com/carloshzoghbi/kubernetes-aws/main/bigip-ctrl-ingress/ingressLink/config/loadbalancer.yaml
 wget https://raw.githubusercontent.com/carloshzoghbi/kubernetes-aws/main/bigip-ctrl-ingress/ingressLink/config/nginx-config.yaml
+wget https://raw.githubusercontent.com/carloshzoghbi/AKS-IngressLink/main/cafe-dosprotected.yaml
 kubectl apply -f common/ns-and-sa.yaml
+kubectl apply -f syslog.yaml
+kubectl apply -f syslog2.yaml
 kubectl apply -f deployment/appprotect-dos-arb.yaml
 kubectl apply -f service/appprotect-dos-arb-svc.yaml
 kubectl apply -f rbac/rbac.yaml
@@ -34,6 +41,9 @@ kubectl apply -f common/crds/appprotectdos.f5.com_apdospolicy.yaml
 kubectl apply -f common/crds/appprotectdos.f5.com_dosprotectedresources.yaml
 kubectl apply -f daemon-set/nginx-plus-ingress.yaml
 kubectl apply -f loadbalancer.yaml
+kubectl apply -f apdos-logconf.yaml
+kubectl apply -f apdos-policy.yaml
+kubectl apply -f cafe-dosprotected.yaml
 kubectl create -f cafe.yaml
 kubectl create -f cafe-secret.yaml
 kubectl create -f ap-logconf.yaml
