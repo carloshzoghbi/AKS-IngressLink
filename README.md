@@ -136,8 +136,12 @@ curl -kvu $CREDS https://$IP/mgmt/shared/appsvcs/info
 # Create cis partition
 curl -kvu $CREDS https://$IP/mgmt/tm/sys/folder -X POST -H 'Content-Type: application/json;charset=UTF-8' -d '{"name": "cispartition", "partition": "/"}'
 ```
-# 3. Create a Kali VM
+# 3. Create an Attack VM
 
+```shell
+az vm create -n vm-attack  -g $RG --size Standard_B2s --image Canonical:0001-com-ubuntu-server-focal:20_04-lts-gen2:latest --storage-sku StandardSSD_LRS --vnet-name $VNET --subnet server-subnet --nsg "" --admin-username ubuntu --admin-password f5DEMOs4uLATAM --custom-data cloud-init.txt
+```
+###Optional
 - On the Azure portal go to your Resource Group, click and enter on it.
 - Click on 'Create'
 - Click on 'Virtual machine'
@@ -214,21 +218,32 @@ kubectl apply -f ingresslink.yaml
   
 # 4. Test the App
   
-### Login to Kali and test de app
+### Login to the "Attack VM" and test de app
+  1. Open your Kali Linux terminal in SSH by using the IP Public assigned to the VM.
+  2. Ensure GoldenEye is on the system.
+  3. Use the following command to launch the attack:
+  ```shell
+  ./GoldenEye/goldeneye.py https://cafe.example.com -s 1000 -m post -n
+  ```
+  
+  
+  
+  If you use de second option:
+  
   1. Open your Kali Linux terminal in SSH by using the IP Public assigned to the VM. Use the private key you download in previows steps.
   
   ```shell
-  #Ensure you have read-only access to the private key
+  #For the second option, ensure you have read-only access to the private key
   chmod 400 <keyname>
   ssh -i <keyname> azureuser@xxx.xxx.xxx.xxx
   ```
   2. Type 'sudo bash'
-  2. Use the following command to install the tool:
+  3. Use the following command to install the tool:
   ```shell
   git clone https://github.com/jseidl/GoldenEye.git 
   ```
-  3. Modify the 'hosts' file pointing 'cafe.example.com' to the VS IP
-  4. Use the following command to launch the attack:
+  4. Modify the 'hosts' file pointing 'cafe.example.com' to the VS IP
+  5. Use the following command to launch the attack:
   ```shell
   ./GoldenEye/goldeneye.py https://cafe.example.com -s 1000 -m post -n
   ```
