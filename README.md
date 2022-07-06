@@ -213,20 +213,21 @@ kubectl apply -f customresourcedefinitions.yaml
 kubectl apply -f ingresslink.yaml
 ```
 
-  NGINX ingress controller, BIG-IP CIS, BIG-IP instance and F5 Ingress link are deployed! 
+  NGINX Kubernetes ingress controller, BIG-IP CIS and F5 Ingress link are deployed! 
   
   
 # 4. Test the App
 
-## L7 Attack - WAF
+## HTTP Attack - WAF
   
   1. Modify the 'hosts' file pointing 'cafe.example.com' to the F5 VM public IP
   2. In your browser go to 'https://cafe.example.com/tea' and 'https://cafe.example.com/coffee'
   3. Ensure you can access the app
   4. Simulate an L7 attack such as XXS 
      You can use 'https://cafe.example.com/coffee<script>'
+  5. You should see the request rejected message
   
-## DoS Attack  
+## HTTP DoS Attack  
   
 ### Login to the "Attack VM" and test de app
   1. Open your Kali Linux terminal in SSH by using the IP Public assigned to the VM.
@@ -255,3 +256,16 @@ kubectl apply -f ingresslink.yaml
   ```shell
   ./GoldenEye/goldeneye.py https://cafe.example.com -s 1000 -m post -n
   ```
+  
+  **## Versioning**
+
+1.0.0
+
+**## Authors**
+
+- **Carlos Hernandez**: <https://github.com/carloshzoghbi>
+- **Cristian Bayona**
+
+**## Acknowledgements**
+
+- Carlos Valencia - for helping me moving from EKS to AKS.
