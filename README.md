@@ -218,7 +218,7 @@ kubectl apply -f ingresslink.yaml
   
 # 4. Test the App
 
-##L7 Attack - WAF
+## L7 Attack - WAF
   
   1. Modify the 'hosts' file pointing 'cafe.example.com' to the F5 VM public IP
   2. In your browser go to 'https://cafe.example.com/tea' and 'https://cafe.example.com/coffee'
@@ -226,7 +226,7 @@ kubectl apply -f ingresslink.yaml
   4. Simulate an L7 attack such as XXS 
      You can use 'https://cafe.example.com/coffee<script>'
   
-##DoS Attack  
+## DoS Attack  
   
 ### Login to the "Attack VM" and test de app
   1. Open your Kali Linux terminal in SSH by using the IP Public assigned to the VM.
