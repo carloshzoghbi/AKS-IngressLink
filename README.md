@@ -226,6 +226,7 @@ kubectl apply -f ingresslink.yaml
   4. Simulate an L7 attack such as XXS 
      You can use 'https://cafe.example.com/coffee<script>'
   5. You should see the request rejected message
+  
   ![Screen Shot 2022-07-06 at 2 01 16 PM](https://user-images.githubusercontent.com/37075619/177623610-3bed9762-195b-4c3c-a2e2-24a8fd1f8193.png)
   
   
