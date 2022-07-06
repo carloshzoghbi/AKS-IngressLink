@@ -263,7 +263,7 @@ kubectl apply -f ingresslink.yaml
 
 **## Authors**
 
-- **Carlos Hernandez**: <https://github.com/carloshzoghbi>
+- **Carlos Hernandez**
 - **Cristian Bayona**
 
 **## Acknowledgements**
