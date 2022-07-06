@@ -72,7 +72,7 @@ az account list --output table
 az account set --subscription f5-AZR_4261_SALES_SA_ALL
 
 #Change the XXX for your alias resource names
-export RG="XXX-k8s-gud"
+export RG="XXX-k8s-guada"
 export LOCATION="eastus2"
 export VNET="XXX-k8s-vnet"
 export SUBMASTER="master-subnet"
