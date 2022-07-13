@@ -215,8 +215,24 @@ kubectl apply -f ingresslink.yaml
 
   NGINX Kubernetes ingress controller, BIG-IP CIS and F5 Ingress link are deployed! 
   
+
+# 4. Test IngressLink
+
+  1. On the Azure portal go to your Resource Group, click and enter on it.
+  2. Look for your K8s cluster and enter on it
+  3. Look for node pools and clock on "Add node pool"
+  4. Node pool name: nodepool2
+  5. Size: DS2_v2
+  6. Scale Method: Manual
+  7. Node Count: 1
+  8. Click on "Review and create" + "Create"
   
-# 4. Test the App
+  Wait 5 to 10 minutes
+  
+  9. Open your BIG-IP at the GUI and review the pool members con the "cispartition". Do you see any changes? Comment which ones and why?
+   
+   
+# 5. Test the App
 
 ## HTTP Attack - WAF
   
