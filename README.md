@@ -137,11 +137,11 @@ curl -kvu $CREDS https://$IP/mgmt/shared/appsvcs/info
 curl -kvu $CREDS https://$IP/mgmt/tm/sys/folder -X POST -H 'Content-Type: application/json;charset=UTF-8' -d '{"name": "cispartition", "partition": "/"}'
 ```
 # 3. Create an Attack VM
-
+Deploy an Ubuntu VM (5 - 10 min):
 ```shell
 az vm create -n vm-attack  -g $RG --size Standard_B2s --image Canonical:0001-com-ubuntu-server-focal:20_04-lts-gen2:latest --storage-sku StandardSSD_LRS --vnet-name $VNET --subnet server-subnet --nsg "" --admin-username ubuntu --admin-password f5DEMOs4uLATAM --custom-data cloud-init.txt
 ```
-###Optional
+## Optional
 - On the Azure portal go to your Resource Group, click and enter on it.
 - Click on 'Create'
 - Click on 'Virtual machine'
@@ -264,7 +264,7 @@ kubectl apply -f ingresslink.yaml
   ./GoldenEye/goldeneye.py https://cafe.example.com -s 1000 -m post -n
   ``` 
   
-### If you use de second option:
+### If you use the second option:
   
   1. Open your Kali Linux terminal in SSH by using the IP Public assigned to the VM. Use the private key you download in previows steps.
   
