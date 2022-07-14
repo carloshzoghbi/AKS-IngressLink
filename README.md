@@ -176,7 +176,8 @@ This is a step by step guide to deploy f5 IngressLink.
 git clone https://github.com/carloshzoghbi/AKS-IngressLink.git
 ```
 
-3. Edit the following 2 files:  
+3. Edit the following 2 files:
+
 **cis-deployment.yaml**:  
   - Fill in the value of "--bigip-url" with the self IP of the BIG-IP. This is the private IP address of the BIG-IP that the controller will contact. Using the external IP may work but is not secure.
 
