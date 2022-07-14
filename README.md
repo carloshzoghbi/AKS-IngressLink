@@ -231,7 +231,14 @@ kubectl apply -f ingresslink.yaml
   Wait 5 to 10 minutes
   
   10. Open your BIG-IP at the GUI and review the pool members on the "cispartition" again. Do you see any changes? Comment which ones and why?
-   
+ 
+ Didn't work?
+ Download the delete-all.sh script, give the right permissions and execute it:
+ ```shell
+ wget https://raw.githubusercontent.com/carloshzoghbi/AKS-IngressLink/main/delete-all.sh
+ chmod u+x delete-all.sh
+ ./delete-all.sh
+ ```
    
 # 5. Test the App
 
@@ -283,6 +290,8 @@ kubectl apply -f ingresslink.yaml
   ./GoldenEye/goldeneye.py https://cafe.example.com -s 1000 -m post -n
   ```
   6. Explore on the log and search for the blocked traffic.
+  
+  **IMPORTANT: Delete your RG!**
   
 ## **Versioning**
 
