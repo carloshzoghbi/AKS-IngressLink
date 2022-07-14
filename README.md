@@ -160,7 +160,7 @@ az vm create -n vm-attack  -g $RG --size Standard_B2s --image Canonical:0001-com
 # 4. F5 IngressLink 
 This is a step by step guide to deploy f5 IngressLink.
 
-***Image***
+![Screen Shot 2022-07-13 at 8 38 14 PM](https://user-images.githubusercontent.com/37075619/178868700-4c460733-7e3d-47c9-a4aa-be998ca39d6c.png)
 
 1. Ensure you can login to the BIG-IP (you can use echo $IP)
 
