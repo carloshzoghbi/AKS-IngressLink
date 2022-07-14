@@ -164,8 +164,9 @@ This is a step by step guide to deploy f5 IngressLink.
 
 1. Ensure you can login to the BIG-IP (you can use echo $IP)
 
-- Login to BIG-IP GUI https://<IP>:8443
-Verify AS3 is installed at iApps > Package Managment LX. See "f5-appsvcs"
+- Login to BIG-IP GUI https://$IP:8443
+
+- Verify AS3 is installed at iApps > Package Managment LX. See "f5-appsvcs"
 
 ### Create the BIG-IP Container Ingress Service
 #### Configure the CIS deployment files:
