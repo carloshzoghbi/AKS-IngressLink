@@ -293,7 +293,9 @@ kubectl apply -f ingresslink.yaml
   ```
   6. Explore on the log and search for the blocked traffic.
   
-  **IMPORTANT NOTE: DELETE your RG!**
+  # 6. Final Step
+  
+  **DELETE your RG!**
   
 ## **Versioning**
 
