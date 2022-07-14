@@ -293,6 +293,6 @@ kubectl apply -f ingresslink.yaml
 - **Carlos Hernandez**
 - **Cristian Bayona**
 
-**## Contributors**
+## **Contributors**
 
-- Carlos Valencia
+- **Carlos Valencia**
