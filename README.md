@@ -141,7 +141,7 @@ Deploy an Ubuntu VM (5 - 10 min):
 ```shell
 az vm create -n vm-attack  -g $RG --size Standard_B2s --image Canonical:0001-com-ubuntu-server-focal:20_04-lts-gen2:latest --storage-sku StandardSSD_LRS --vnet-name $VNET --subnet server-subnet --nsg "" --admin-username ubuntu --admin-password f5DEMOs4uLATAM --custom-data cloud-init.txt
 ```
-## Optional
+### Optional
 - On the Azure portal go to your Resource Group, click and enter on it.
 - Click on 'Create'
 - Click on 'Virtual machine'
