@@ -272,16 +272,23 @@ kubectl apply -f ingresslink.yaml
   git clone https://github.com/jseidl/GoldenEye.git 
   ```
   4. Modify the 'hosts' file pointing 'cafe.example.com' to the VS IP
+  5. On the k8s cluster get the Syslog pod name and get an interactive shell on the pod in log messages. You will see the attack traffic incomming:
+  ```shell
+  kubectl get pods
+  
+  kubectl exec -it syslog-xxx-xxx -- cat /var/log/messages
+  ```
   5. Use the following command to launch the attack:
   ```shell
   ./GoldenEye/goldeneye.py https://cafe.example.com -s 1000 -m post -n
   ```
+  6. Explore on the log and search for the blocked traffic.
   
-**## Versioning**
+## **Versioning**
 
 1.0.0
 
-**## Authors**
+## **Authors**
 
 - **Carlos Hernandez**
 - **Cristian Bayona**
