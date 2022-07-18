@@ -249,9 +249,13 @@ kubectl apply -f ingresslink.yaml
   1. Modify the 'hosts' file pointing 'cafe.example.com' to the F5 VM public IP
   2. In your browser go to 'https://cafe.example.com/tea' and 'https://cafe.example.com/coffee'
   3. Ensure you can access the app
-  4. Simulate an L7 attack such as XXS 
-     You can use 'https://cafe.example.com/coffee<script>'
-  5. You should see the request rejected message
+  4. Simulate an L7 attack such as XXS
+  
+  You can use 'https://cafe.example.com/coffee<script>'
+  
+  5. Is the WAF blocking?
+  6. If not enable app ptrotect on the cafe-ingress.yaml
+  7. You should see the request rejected message
   
   ![Screen Shot 2022-07-06 at 2 01 16 PM](https://user-images.githubusercontent.com/37075619/177623610-3bed9762-195b-4c3c-a2e2-24a8fd1f8193.png)
   
