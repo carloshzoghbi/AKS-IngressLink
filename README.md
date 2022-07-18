@@ -139,6 +139,7 @@ curl -kvu $CREDS https://$IP/mgmt/tm/sys/folder -X POST -H 'Content-Type: applic
 # 3. Create an Attack VM
 Deploy an Ubuntu VM (5 - 10 min):
 ```shell
+wget https://raw.githubusercontent.com/carloshzoghbi/AKS-IngressLink/main/cloud-init.txt
 az vm create -n vm-attack  -g $RG --size Standard_B2s --image Canonical:0001-com-ubuntu-server-focal:20_04-lts-gen2:latest --storage-sku StandardSSD_LRS --vnet-name $VNET --subnet server-subnet --nsg "" --admin-username ubuntu --admin-password f5DEMOs4uLATAM --custom-data cloud-init.txt
 ```
 ### Optional
